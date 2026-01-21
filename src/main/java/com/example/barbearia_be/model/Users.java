@@ -16,17 +16,27 @@ public class Users {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "password")
+    private String password;
+
     @Column(name = "name")
     private String name;
 
     @Column(name = "role")
     private Integer role;
 
-    public Users(Long id, String username, String name, Integer role) {
+    public Users(Long id, String username, String password, String name, Integer role) {
         this.id = id;
         this.username = username;
+        this.password = password;
         this.name = name;
         this.role = role;
+    }
+
+    public Users(String username, String password, String name) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
     }
 
     public Users() {
