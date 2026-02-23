@@ -13,8 +13,8 @@ public class Users {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username", unique = true)
-    private String username;
+    @Column(name = "email", unique = true)
+    private String email;
 
     @Column(name = "password")
     private String password;
@@ -25,16 +25,15 @@ public class Users {
     @Column(name = "role")
     private Integer role;
 
-    public Users(Long id, String username, String password, String name, Integer role) {
+    public Users(Long id, String password, String name, Integer role) {
         this.id = id;
-        this.username = username;
         this.password = password;
         this.name = name;
         this.role = role;
     }
 
-    public Users(String username, String password, String name, Integer role) {
-        this.username = username;
+    public Users(String username, String email, String password, String name, Integer role) {
+        this.email = email;
         this.password = password;
         this.name = name;
         this.role = role;

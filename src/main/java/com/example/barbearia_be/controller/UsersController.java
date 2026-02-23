@@ -1,8 +1,8 @@
 package com.example.barbearia_be.controller;
 
-import com.example.barbearia_be.dto.CreateUpdateUserDTO;
-import com.example.barbearia_be.dto.UserLoginRequest;
-import com.example.barbearia_be.dto.UserLoginResponse;
+import com.example.barbearia_be.dto.users.CreateUpdateUserDTO;
+import com.example.barbearia_be.dto.users.UserLoginRequest;
+import com.example.barbearia_be.dto.users.UserLoginResponse;
 import com.example.barbearia_be.service.UsersService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

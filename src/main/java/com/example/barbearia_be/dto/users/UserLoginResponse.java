@@ -1,15 +1,16 @@
-package com.example.barbearia_be.dto;
+package com.example.barbearia_be.dto.users;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserLoginRequest {
+@Getter
+@Setter
+public class UserLoginResponse {
+    private Long id;
     private String name;
-    private String password;
+    private Integer role;
 }

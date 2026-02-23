@@ -1,4 +1,4 @@
-package com.example.barbearia_be.dto;
+package com.example.barbearia_be.dto.users;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +12,7 @@ import lombok.Setter;
 public class CreateUpdateUserDTO {
     private Long id;
     private String username;
+    private String email;
     private String password;
     private String name;
 

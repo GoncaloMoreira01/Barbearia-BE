@@ -10,8 +10,8 @@ import org.springframework.data.repository.query.Param;
 public interface IUsersRepo extends JpaRepository<Users, Long> {
 
     @Lock(LockModeType.NONE)
-    @Query(value = "SELECT u FROM Users u where u.username = :username")
-    Users getUserByUsername(@Param("username") String username);
+    @Query(value = "SELECT u FROM Users u where u.email = :email")
+    Users getUserByEmail(@Param("email") String email);
 
-    boolean existsByUsername(String username);
+    boolean existsByEmail(String username);
 }
