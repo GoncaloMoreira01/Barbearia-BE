@@ -14,4 +14,6 @@ public interface IUsersRepo extends JpaRepository<Users, Long> {
     Users getUserByEmail(@Param("email") String email);
 
     boolean existsByEmail(String username);
+
+    Users getUserById(long id);
 }

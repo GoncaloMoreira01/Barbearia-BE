@@ -11,20 +11,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CreateUpdateUserDTO {
     private Long id;
-    private String username;
     private String email;
     private String password;
     private String name;
 
-    public CreateUpdateUserDTO(String username, String password, String name) {
-        this.username = username;
-        this.password = password;
-        this.name = name;
-    }
-
-    public CreateUpdateUserDTO(Long id, String username, String name) {
+    public CreateUpdateUserDTO(Long id, String email, String name) {
         this.id = id;
-        this.username = username;
+        this.email = email;
         this.name = name;
     }
 }

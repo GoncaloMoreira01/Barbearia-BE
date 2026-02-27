@@ -20,9 +20,9 @@ public class UsersService {
 
     @Transactional
     public CreateUpdateUserDTO create(CreateUpdateUserDTO userDto) {
-        boolean usernameExists = iUsersRepo.existsByEmail(userDto.getUsername());
-        if (!usernameExists) {
-            Users user = new Users(userDto.getUsername(), userDto.getEmail(), passwordEncoder.encode(userDto.getPassword()), userDto.getName(), Roles.CLIENT.getId());
+        boolean emailExists = iUsersRepo.existsByEmail(userDto.getEmail());
+        if (!emailExists) {
+            Users user = new Users(userDto.getEmail(), userDto.getEmail(), passwordEncoder.encode(userDto.getPassword()), userDto.getName(), Roles.CLIENT.getId());
             Users savedUser = iUsersRepo.save(user);
             return new CreateUpdateUserDTO(savedUser.getId(), savedUser.getEmail(), savedUser.getName());
         }
