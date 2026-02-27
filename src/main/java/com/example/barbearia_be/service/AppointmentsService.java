@@ -1,6 +1,5 @@
 package com.example.barbearia_be.service;
 
-import com.example.barbearia_be.dto.appointments.BarberAppointmentsRequest;
 import com.example.barbearia_be.dto.appointments.BarberAppointmentsResponseDto;
 import com.example.barbearia_be.dto.appointments.CreateAppointmentRequest;
 import com.example.barbearia_be.model.Appointments;
@@ -11,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +22,9 @@ public class AppointmentsService {
     private final IUsersRepo iUsersRepo;
 
     @Transactional
-    public List<BarberAppointmentsResponseDto> getBarberAppointments(BarberAppointmentsRequest barberAppointmentsRequest) {
-        List<Appointments> barberAppointments = iAppointmentsRepo.getBarberAppointmentsByDate(barberAppointmentsRequest.getBarberId(),
-                barberAppointmentsRequest.getScheduleDate().atStartOfDay(), barberAppointmentsRequest.getScheduleDate().atTime(23,59,59));
+    public List<BarberAppointmentsResponseDto> getBarberAppointments(long barberId, LocalDate scheduleDate) {
+        List<Appointments> barberAppointments = iAppointmentsRepo.getBarberAppointmentsByDate(barberId,
+                scheduleDate.atStartOfDay(), scheduleDate.atTime(23,59,59));
         if (barberAppointments != null) {
             List<BarberAppointmentsResponseDto> appointmentsDtoList = new ArrayList<>();
             for (Appointments appointment : barberAppointments) {

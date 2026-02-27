@@ -1,7 +1,6 @@
 package com.example.barbearia_be.controller;
 
 
-import com.example.barbearia_be.dto.appointments.BarberAppointmentsRequest;
 import com.example.barbearia_be.dto.appointments.BarberAppointmentsResponseDto;
 import com.example.barbearia_be.dto.appointments.CreateAppointmentRequest;
 import com.example.barbearia_be.model.Appointments;
@@ -11,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -35,9 +35,9 @@ public class AppointmentsController {
     }
 
     @GetMapping("/getBarberAppointments")
-    public ResponseEntity<List<BarberAppointmentsResponseDto>> getBarberAppointments(@RequestBody BarberAppointmentsRequest barberAppointmentsRequest) {
+    public ResponseEntity<List<BarberAppointmentsResponseDto>> getBarberAppointments(@RequestParam long barberId, @RequestParam LocalDate scheduleDate) {
         try {
-            List<BarberAppointmentsResponseDto> barberAppointments = appointmentsService.getBarberAppointments(barberAppointmentsRequest);
+            List<BarberAppointmentsResponseDto> barberAppointments = appointmentsService.getBarberAppointments(barberId, scheduleDate);
             if (barberAppointments != null) {
                 return ResponseEntity.status(HttpStatus.CREATED).body(barberAppointments);
             } else {
