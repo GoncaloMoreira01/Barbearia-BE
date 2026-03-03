@@ -28,4 +28,8 @@ public class Testimonials {
         this.description = description;
         this.stars = stars;
     }
+
+    public Testimonials() {
+
+    }
 }
