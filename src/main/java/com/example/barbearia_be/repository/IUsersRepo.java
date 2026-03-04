@@ -7,11 +7,17 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface IUsersRepo extends JpaRepository<Users, Long> {
 
     @Lock(LockModeType.NONE)
     @Query(value = "SELECT u FROM Users u where u.email = :email")
     Users getUserByEmail(@Param("email") String email);
+
+    @Lock(LockModeType.NONE)
+    @Query(value = "SELECT u FROM Users u where u.role = 1")
+    List<Users> getBarbers();
 
     boolean existsByEmail(String username);
 

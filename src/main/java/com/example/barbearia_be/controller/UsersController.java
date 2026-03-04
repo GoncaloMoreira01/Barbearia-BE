@@ -1,6 +1,7 @@
 package com.example.barbearia_be.controller;
 
 import com.example.barbearia_be.dto.users.CreateUpdateUserDTO;
+import com.example.barbearia_be.dto.users.UserIdName;
 import com.example.barbearia_be.dto.users.UserLoginRequest;
 import com.example.barbearia_be.dto.users.UserLoginResponse;
 import com.example.barbearia_be.service.UsersService;
@@ -9,12 +10,28 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("users")
 public class UsersController {
 
     private final UsersService usersService;
+
+    @GetMapping("/getBarbers")
+    public ResponseEntity<List<UserIdName>> getBarbers() {
+        try {
+            List<UserIdName> barbersList = usersService.getBarbers();
+            if (barbersList != null) {
+                return ResponseEntity.status(HttpStatus.CREATED).body(barbersList);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @PostMapping("/create")
     public ResponseEntity<CreateUpdateUserDTO> createUser(@RequestBody CreateUpdateUserDTO user) {

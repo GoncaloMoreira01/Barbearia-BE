@@ -2,6 +2,7 @@ package com.example.barbearia_be.service;
 
 import com.example.barbearia_be.constants.Roles;
 import com.example.barbearia_be.dto.users.CreateUpdateUserDTO;
+import com.example.barbearia_be.dto.users.UserIdName;
 import com.example.barbearia_be.dto.users.UserLoginRequest;
 import com.example.barbearia_be.dto.users.UserLoginResponse;
 import com.example.barbearia_be.model.Users;
@@ -10,6 +11,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -36,5 +40,18 @@ public class UsersService {
             return new UserLoginResponse(user.getId(), user.getName(), user.getRole());
         }
         return null;
+    }
+
+    @Transactional
+    public List<UserIdName> getBarbers() {
+        List<UserIdName> barbersList = new ArrayList<>();
+        List<Users> barbers = iUsersRepo.getBarbers();
+        if (barbers != null) {
+            for (Users barber : barbers) {
+                UserIdName userIdName = new UserIdName(barber.getId(), barber.getName());
+                barbersList.add(userIdName);
+            }
+        }
+        return barbersList;
     }
 }
