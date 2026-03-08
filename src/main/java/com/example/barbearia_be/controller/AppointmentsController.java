@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -40,6 +41,20 @@ public class AppointmentsController {
             List<BarberAppointmentsResponseDto> barberAppointments = appointmentsService.getBarberAppointments(barberId, scheduleDate);
             if (barberAppointments != null) {
                 return ResponseEntity.status(HttpStatus.CREATED).body(barberAppointments);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/getAvailableDatesForBarber")
+    public ResponseEntity<List<LocalDateTime>> getAvailableDatesForBarber(@RequestParam long barberId, @RequestParam LocalDate scheduleDate) {
+        try {
+            List<LocalDateTime> availableSlots = appointmentsService.getAvailableDatesForBarber(barberId, scheduleDate);
+            if (availableSlots != null) {
+                return ResponseEntity.status(HttpStatus.CREATED).body(availableSlots);
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
             }
