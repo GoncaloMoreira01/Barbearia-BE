@@ -28,6 +28,9 @@ public class Appointments {
     @Column(name = "description")
     private String description;
 
+    @Column(name="serviceType")
+    private Long serviceType;
+
     public Appointments(Long id, Users client, Users barber, LocalDateTime scheduleDate) {
         this.id = id;
         this.client = client;
@@ -35,11 +38,12 @@ public class Appointments {
         this.scheduleDate = scheduleDate;
     }
 
-    public Appointments(Users client, Users barber, LocalDateTime scheduleDate, String description) {
+    public Appointments(Users client, Users barber, LocalDateTime scheduleDate, String description, Long serviceType) {
         this.client = client;
         this.barber = barber;
         this.scheduleDate = scheduleDate;
         this.description = description;
+        this.serviceType = serviceType;
     }
 
     public Appointments() {

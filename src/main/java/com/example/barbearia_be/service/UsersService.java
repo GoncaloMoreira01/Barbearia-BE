@@ -1,6 +1,6 @@
 package com.example.barbearia_be.service;
 
-import com.example.barbearia_be.constants.Roles;
+import com.example.barbearia_be.constants.RolesEnum;
 import com.example.barbearia_be.dto.users.CreateUpdateUserDTO;
 import com.example.barbearia_be.dto.users.UserIdName;
 import com.example.barbearia_be.dto.users.UserLoginRequest;
@@ -26,7 +26,7 @@ public class UsersService {
     public CreateUpdateUserDTO create(CreateUpdateUserDTO userDto) {
         boolean emailExists = iUsersRepo.existsByEmail(userDto.getEmail());
         if (!emailExists) {
-            Users user = new Users(userDto.getEmail(), userDto.getEmail(), passwordEncoder.encode(userDto.getPassword()), userDto.getName(), Roles.CLIENT.getId());
+            Users user = new Users(userDto.getEmail(), userDto.getEmail(), passwordEncoder.encode(userDto.getPassword()), userDto.getName(), RolesEnum.CLIENT.getId());
             Users savedUser = iUsersRepo.save(user);
             return new CreateUpdateUserDTO(savedUser.getId(), savedUser.getEmail(), savedUser.getName());
         }

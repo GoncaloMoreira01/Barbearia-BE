@@ -40,6 +40,37 @@ public class AppointmentsService {
     }
 
     @Transactional
+    public List<BarberAppointmentsResponseDto> getNextClientAppointments(long clientId) {
+        List<Appointments> barberAppointments = iAppointmentsRepo.getNextClientAppointments(clientId, LocalDateTime.now());
+        if (barberAppointments != null) {
+            List<BarberAppointmentsResponseDto> appointmentsDtoList = new ArrayList<>();
+            for (Appointments appointment : barberAppointments) {
+                BarberAppointmentsResponseDto appointmentDto = new BarberAppointmentsResponseDto(appointment.getClient().getName(), appointment.getScheduleDate(),
+                        appointment.getDescription());
+                appointmentsDtoList.add(appointmentDto);
+            }
+            return appointmentsDtoList;
+        }
+        return null;
+    }
+
+    @Transactional
+    public List<BarberAppointmentsResponseDto> getOldClientAppointments(long clientId) {
+        List<Appointments> barberAppointments = iAppointmentsRepo.getOldClientAppointments(clientId, LocalDateTime.now());
+        if (barberAppointments != null) {
+            List<BarberAppointmentsResponseDto> appointmentsDtoList = new ArrayList<>();
+            for (Appointments appointment : barberAppointments) {
+                BarberAppointmentsResponseDto appointmentDto = new BarberAppointmentsResponseDto(appointment.getClient().getName(), appointment.getScheduleDate(),
+                        appointment.getDescription());
+                appointmentsDtoList.add(appointmentDto);
+            }
+            return appointmentsDtoList;
+        }
+        return null;
+    }
+
+
+    @Transactional
     public List<LocalDateTime> getAvailableDatesForBarber(long barberId, LocalDate scheduleDate) {
         LocalDateTime scheduleDateStart = scheduleDate.atTime(9,0);
         LocalDateTime scheduleDateEnd = scheduleDate.atTime(20, 0);
@@ -63,7 +94,7 @@ public class AppointmentsService {
         Users client = iUsersRepo.getUserById(createAppointmentRequest.getClientId());
         Users barber = iUsersRepo.getUserById(createAppointmentRequest.getBarberId());
 
-        Appointments appointment = new Appointments(client, barber, createAppointmentRequest.getScheduleDate(), createAppointmentRequest.getDescription());
+        Appointments appointment = new Appointments(client, barber, createAppointmentRequest.getScheduleDate(), createAppointmentRequest.getDescription(), createAppointmentRequest.getServiceType().longValue());
         return iAppointmentsRepo.save(appointment);
     }
 }

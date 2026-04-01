@@ -14,4 +14,5 @@ public class CreateAppointmentRequest {
     private long barberId;
     private LocalDateTime scheduleDate;
     private String description;
+    private Integer serviceType;
 }

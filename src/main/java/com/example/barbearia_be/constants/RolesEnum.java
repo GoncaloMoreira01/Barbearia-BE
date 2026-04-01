@@ -2,12 +2,10 @@ package com.example.barbearia_be.constants;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
-public enum Roles {
+public enum RolesEnum {
     CLIENT(0, "CLIENT"),
     BARBER(1, "BARBER");
 

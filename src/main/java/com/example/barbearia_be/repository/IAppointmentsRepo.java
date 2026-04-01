@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,4 +16,12 @@ public interface IAppointmentsRepo extends JpaRepository<Appointments, Long> {
     @Lock(LockModeType.NONE)
     @Query(value = "SELECT a FROM Appointments a where a.barber.id = :barberId AND  a.scheduleDate >= :firstMinute AND a.scheduleDate < :lastMinute")
     List<Appointments> getBarberAppointmentsByDate(@Param("barberId") long barberId, @Param("firstMinute") LocalDateTime firstMinute, @Param("lastMinute") LocalDateTime lastMinute);
+
+    @Lock(LockModeType.NONE)
+    @Query(value = "SELECT a FROM Appointments a where a.client.id = :clientId AND a.scheduleDate >= :dateToday")
+    List<Appointments> getNextClientAppointments(@Param("clientId") long clientId, @Param("dateToday")LocalDateTime dateToday);
+
+    @Lock(LockModeType.NONE)
+    @Query(value = "SELECT a FROM Appointments a where a.client.id = :clientId AND a.scheduleDate < :dateToday")
+    List<Appointments> getOldClientAppointments(@Param("clientId") long clientId, @Param("dateToday")LocalDateTime dateToday);
 }

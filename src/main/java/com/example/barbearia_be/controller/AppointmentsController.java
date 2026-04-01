@@ -49,6 +49,34 @@ public class AppointmentsController {
         }
     }
 
+    @GetMapping("/getNextClientAppointments")
+    public ResponseEntity<List<BarberAppointmentsResponseDto>> getNextClientAppointments(@RequestParam long clientId) {
+        try {
+            List<BarberAppointmentsResponseDto> barberAppointments = appointmentsService.getNextClientAppointments(clientId);
+            if (barberAppointments != null) {
+                return ResponseEntity.status(HttpStatus.CREATED).body(barberAppointments);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/getOldClientAppointments")
+    public ResponseEntity<List<BarberAppointmentsResponseDto>> getOldClientAppointments(@RequestParam long clientId) {
+        try {
+            List<BarberAppointmentsResponseDto> barberAppointments = appointmentsService.getOldClientAppointments(clientId);
+            if (barberAppointments != null) {
+                return ResponseEntity.status(HttpStatus.CREATED).body(barberAppointments);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @GetMapping("/getAvailableDatesForBarber")
     public ResponseEntity<List<LocalDateTime>> getAvailableDatesForBarber(@RequestParam long barberId, @RequestParam LocalDate scheduleDate) {
         try {
