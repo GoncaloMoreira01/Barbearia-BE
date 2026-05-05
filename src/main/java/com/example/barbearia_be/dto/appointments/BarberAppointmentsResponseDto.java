@@ -12,8 +12,9 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class BarberAppointmentsResponseDto {
-    private String clientName;
+    private String barberName;
     private LocalDateTime scheduleDate;
     private String description;
+    private Long serviceType;
 
 }

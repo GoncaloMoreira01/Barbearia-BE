@@ -31,7 +31,7 @@ public class AppointmentsService {
             List<BarberAppointmentsResponseDto> appointmentsDtoList = new ArrayList<>();
             for (Appointments appointment : barberAppointments) {
                 BarberAppointmentsResponseDto appointmentDto = new BarberAppointmentsResponseDto(appointment.getClient().getName(), appointment.getScheduleDate(),
-                        appointment.getDescription());
+                        appointment.getDescription(), appointment.getServiceType());
                 appointmentsDtoList.add(appointmentDto);
             }
             return appointmentsDtoList;
@@ -46,7 +46,7 @@ public class AppointmentsService {
             List<BarberAppointmentsResponseDto> appointmentsDtoList = new ArrayList<>();
             for (Appointments appointment : barberAppointments) {
                 BarberAppointmentsResponseDto appointmentDto = new BarberAppointmentsResponseDto(appointment.getClient().getName(), appointment.getScheduleDate(),
-                        appointment.getDescription());
+                        appointment.getDescription(), appointment.getServiceType());
                 appointmentsDtoList.add(appointmentDto);
             }
             return appointmentsDtoList;
@@ -60,8 +60,8 @@ public class AppointmentsService {
         if (barberAppointments != null) {
             List<BarberAppointmentsResponseDto> appointmentsDtoList = new ArrayList<>();
             for (Appointments appointment : barberAppointments) {
-                BarberAppointmentsResponseDto appointmentDto = new BarberAppointmentsResponseDto(appointment.getClient().getName(), appointment.getScheduleDate(),
-                        appointment.getDescription());
+                BarberAppointmentsResponseDto appointmentDto = new BarberAppointmentsResponseDto(appointment.getBarber().getName(), appointment.getScheduleDate(),
+                        appointment.getDescription(), appointment.getServiceType());
                 appointmentsDtoList.add(appointmentDto);
             }
             return appointmentsDtoList;
