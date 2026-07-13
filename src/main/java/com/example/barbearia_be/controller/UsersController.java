@@ -34,9 +34,9 @@ public class UsersController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CreateUpdateUserDTO> createUser(@RequestBody CreateUpdateUserDTO user) {
+    public ResponseEntity<UserLoginResponse> createUser(@RequestBody CreateUpdateUserDTO user) {
         try {
-            CreateUpdateUserDTO createdUser = usersService.create(user);
+            UserLoginResponse createdUser = usersService.create(user);
             if (createdUser != null) {
                 return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
             } else {

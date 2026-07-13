@@ -23,12 +23,12 @@ public class UsersService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public CreateUpdateUserDTO create(CreateUpdateUserDTO userDto) {
+    public UserLoginResponse create(CreateUpdateUserDTO userDto) {
         boolean emailExists = iUsersRepo.existsByEmail(userDto.getEmail());
         if (!emailExists) {
             Users user = new Users(userDto.getEmail(), userDto.getEmail(), passwordEncoder.encode(userDto.getPassword()), userDto.getName(), RolesEnum.CLIENT.getId());
             Users savedUser = iUsersRepo.save(user);
-            return new CreateUpdateUserDTO(savedUser.getId(), savedUser.getEmail(), savedUser.getName());
+            return new UserLoginResponse(savedUser.getId(), savedUser.getName(), savedUser.getRole());
         }
         return null;
     }
