@@ -24,13 +24,14 @@ public class UsersService {
 
     @Transactional
     public UserLoginResponse create(CreateUpdateUserDTO userDto) {
-        boolean emailExists = iUsersRepo.existsByEmail(userDto.getEmail());
-        if (!emailExists) {
-            Users user = new Users(userDto.getEmail(), userDto.getEmail(), passwordEncoder.encode(userDto.getPassword()), userDto.getName(), RolesEnum.CLIENT.getId());
-            Users savedUser = iUsersRepo.save(user);
-            return new UserLoginResponse(savedUser.getId(), savedUser.getName(), savedUser.getRole());
+        if (iUsersRepo.existsByEmail(userDto.getEmail())) {
+            throw new IllegalArgumentException("Email already exists.");
         }
-        return null;
+
+        Users user = new Users(userDto.getEmail(), passwordEncoder.encode(userDto.getPassword()), userDto.getName(), RolesEnum.CLIENT.getId());
+        Users savedUser = iUsersRepo.save(user);
+        return new UserLoginResponse(savedUser.getId(), savedUser.getName(), savedUser.getRole());
+
     }
 
     @Transactional
