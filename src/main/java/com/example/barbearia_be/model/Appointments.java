@@ -22,7 +22,8 @@ public class Appointments {
     @JoinColumn(name = "barber_id")
     private Users barber;
 
-    @Column(name = "scheduleDate")
+    // An appointment is a local business time. DATETIME does not apply a timezone conversion.
+    @Column(name = "scheduleDate", columnDefinition = "DATETIME")
     private LocalDateTime scheduleDate;
 
     @Column(name = "description")
