@@ -1,7 +1,9 @@
 package com.example.barbearia_be.service;
 
+import com.example.barbearia_be.dto.appointments.AppointmentInfo;
 import com.example.barbearia_be.dto.appointments.BarberAppointmentsResponseDto;
 import com.example.barbearia_be.dto.appointments.CreateAppointmentRequest;
+import com.example.barbearia_be.dto.appointments.UpdateAppointmentRequest;
 import com.example.barbearia_be.model.Appointments;
 import com.example.barbearia_be.model.Users;
 import com.example.barbearia_be.repository.IAppointmentsRepo;
@@ -45,7 +47,7 @@ public class AppointmentsService {
         if (barberAppointments != null) {
             List<BarberAppointmentsResponseDto> appointmentsDtoList = new ArrayList<>();
             for (Appointments appointment : barberAppointments) {
-                BarberAppointmentsResponseDto appointmentDto = new BarberAppointmentsResponseDto(appointment.getClient().getName(), appointment.getScheduleDate(),
+                BarberAppointmentsResponseDto appointmentDto = new BarberAppointmentsResponseDto(appointment.getId(), appointment.getClient().getName(), appointment.getScheduleDate(),
                         appointment.getDescription(), appointment.getServiceType());
                 appointmentsDtoList.add(appointmentDto);
             }
@@ -96,5 +98,33 @@ public class AppointmentsService {
 
         Appointments appointment = new Appointments(client, barber, createAppointmentRequest.getScheduleDate(), createAppointmentRequest.getDescription(), createAppointmentRequest.getServiceType().longValue());
         return iAppointmentsRepo.save(appointment);
+    }
+
+    @Transactional
+    public Appointments updateAppointment(UpdateAppointmentRequest updateAppointmentRequest) {
+        Optional<Appointments> existingAppointment = iAppointmentsRepo.findById(updateAppointmentRequest.getAppointmentId());
+        if (existingAppointment.isEmpty()) {
+            return null;
+        }
+
+        Users barber = iUsersRepo.getUserById(updateAppointmentRequest.getBarberId());
+        if (barber == null) {
+            return null;
+        }
+
+        Appointments appointment = existingAppointment.get();
+        appointment.setBarber(barber);
+        appointment.setScheduleDate(updateAppointmentRequest.getScheduleDate());
+        appointment.setDescription(updateAppointmentRequest.getDescription());
+        appointment.setServiceType(updateAppointmentRequest.getServiceType().longValue());
+        return iAppointmentsRepo.save(appointment);
+    }
+
+    @Transactional
+    public AppointmentInfo getAppointmentById(Long id) {
+        Appointments appointment = iAppointmentsRepo.getAppointmentById(id);
+
+        return new AppointmentInfo(appointment.getId(), appointment.getBarber().getId(), appointment.getScheduleDate(),
+                appointment.getDescription(), appointment.getServiceType());
     }
 }

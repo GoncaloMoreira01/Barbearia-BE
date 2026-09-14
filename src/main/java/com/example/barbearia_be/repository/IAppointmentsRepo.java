@@ -24,4 +24,8 @@ public interface IAppointmentsRepo extends JpaRepository<Appointments, Long> {
     @Lock(LockModeType.NONE)
     @Query(value = "SELECT a FROM Appointments a where a.client.id = :clientId AND a.scheduleDate < :dateToday")
     List<Appointments> getOldClientAppointments(@Param("clientId") long clientId, @Param("dateToday")LocalDateTime dateToday);
+
+    @Lock(LockModeType.NONE)
+    @Query(value = "SELECT a FROM Appointments a where a.id = :id ")
+    Appointments getAppointmentById(@Param("id") long id);
 }

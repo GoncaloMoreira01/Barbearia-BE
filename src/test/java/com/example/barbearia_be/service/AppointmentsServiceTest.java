@@ -2,6 +2,7 @@ package com.example.barbearia_be.service;
 
 import com.example.barbearia_be.dto.appointments.BarberAppointmentsResponseDto;
 import com.example.barbearia_be.dto.appointments.CreateAppointmentRequest;
+import com.example.barbearia_be.dto.appointments.UpdateAppointmentRequest;
 import com.example.barbearia_be.model.Appointments;
 import com.example.barbearia_be.model.Users;
 import com.example.barbearia_be.repository.IAppointmentsRepo;
@@ -16,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -140,6 +142,39 @@ class AppointmentsServiceTest {
         assertEquals(1, result.size());
         assertEquals("Barbeiro", result.get(0).getBarberName());
         verify(iAppointmentsRepo).getOldClientAppointments(org.mockito.ArgumentMatchers.eq(1L), any(LocalDateTime.class));
+    }
+
+    @Test
+    void shouldUpdateExistingAppointment() {
+        Appointments appointment = appointment(user("Cliente"), user("Barbeiro antigo"),
+                LocalDateTime.of(2026, 9, 10, 10, 0), "Corte", 1L);
+        appointment.setId(12L);
+        Users newBarber = user("Barbeiro novo");
+        LocalDateTime newDate = LocalDateTime.of(2026, 9, 10, 16, 30);
+        UpdateAppointmentRequest request = new UpdateAppointmentRequest(12L, 3L, newDate, "Corte e barba", 2);
+
+        when(iAppointmentsRepo.findById(12L)).thenReturn(Optional.of(appointment));
+        when(iUsersRepo.getUserById(3L)).thenReturn(newBarber);
+        when(iAppointmentsRepo.save(appointment)).thenReturn(appointment);
+
+        Appointments result = appointmentsService.updateAppointment(request);
+
+        assertEquals(appointment, result);
+        assertEquals(newBarber, appointment.getBarber());
+        assertEquals(newDate, appointment.getScheduleDate());
+        assertEquals("Corte e barba", appointment.getDescription());
+        assertEquals(2L, appointment.getServiceType());
+        verify(iAppointmentsRepo).save(appointment);
+    }
+
+    @Test
+    void shouldNotUpdateMissingAppointment() {
+        UpdateAppointmentRequest request = new UpdateAppointmentRequest(99L, 3L,
+                LocalDateTime.of(2026, 9, 10, 16, 30), "Corte", 1);
+        when(iAppointmentsRepo.findById(99L)).thenReturn(Optional.empty());
+
+        assertNull(appointmentsService.updateAppointment(request));
+        verify(iAppointmentsRepo, org.mockito.Mockito.never()).save(any(Appointments.class));
     }
 
     private Users user(String name) {

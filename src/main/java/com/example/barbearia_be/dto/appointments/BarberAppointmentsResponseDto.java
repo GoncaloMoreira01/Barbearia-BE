@@ -12,9 +12,16 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class BarberAppointmentsResponseDto {
+    private Long id;
     private String barberName;
     private LocalDateTime scheduleDate;
     private String description;
     private Long serviceType;
 
+    public BarberAppointmentsResponseDto(String barberName, LocalDateTime scheduleDate, String description, Long serviceType) {
+        this.barberName = barberName;
+        this.scheduleDate = scheduleDate;
+        this.description = description;
+        this.serviceType = serviceType;
+    }
 }
