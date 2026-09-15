@@ -1,5 +1,6 @@
 package com.example.barbearia_be.service;
 
+import com.example.barbearia_be.constants.StatusEnum;
 import com.example.barbearia_be.dto.appointments.AppointmentInfo;
 import com.example.barbearia_be.dto.appointments.BarberAppointmentsResponseDto;
 import com.example.barbearia_be.dto.appointments.CreateAppointmentRequest;
@@ -96,7 +97,8 @@ public class AppointmentsService {
         Users client = iUsersRepo.getUserById(createAppointmentRequest.getClientId());
         Users barber = iUsersRepo.getUserById(createAppointmentRequest.getBarberId());
 
-        Appointments appointment = new Appointments(client, barber, createAppointmentRequest.getScheduleDate(), createAppointmentRequest.getDescription(), createAppointmentRequest.getServiceType().longValue());
+        Appointments appointment = new Appointments(client, barber, createAppointmentRequest.getScheduleDate(), createAppointmentRequest.getDescription(),
+                createAppointmentRequest.getServiceType().longValue(), StatusEnum.ACTIVE.getId());
         return iAppointmentsRepo.save(appointment);
     }
 
@@ -118,6 +120,19 @@ public class AppointmentsService {
         appointment.setDescription(updateAppointmentRequest.getDescription());
         appointment.setServiceType(updateAppointmentRequest.getServiceType().longValue());
         return iAppointmentsRepo.save(appointment);
+    }
+
+    @Transactional
+    public boolean deleteAppointment(long appointmentId) {
+        Optional<Appointments> existingAppointment = iAppointmentsRepo.findById(appointmentId);
+        if (existingAppointment.isEmpty()) {
+            return false;
+        }
+
+        Appointments appointment = existingAppointment.get();
+        appointment.setStatus(StatusEnum.INACTIVE.getId());
+        iAppointmentsRepo.save(appointment);
+        return true;
     }
 
     @Transactional

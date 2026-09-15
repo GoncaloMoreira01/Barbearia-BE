@@ -1,5 +1,6 @@
 package com.example.barbearia_be.service;
 
+import com.example.barbearia_be.constants.StatusEnum;
 import com.example.barbearia_be.dto.appointments.BarberAppointmentsResponseDto;
 import com.example.barbearia_be.dto.appointments.CreateAppointmentRequest;
 import com.example.barbearia_be.dto.appointments.UpdateAppointmentRequest;
@@ -42,7 +43,8 @@ class AppointmentsServiceTest {
     void shouldReturnBarberAppointmentsForScheduleDate() {
         LocalDate scheduleDate = LocalDate.of(2026, 8, 1);
         Users client = user("Cliente");
-        Appointments appointment = appointment(client, user("Barbeiro"), scheduleDate.atTime(10, 0), "Corte", 1L);
+        Appointments appointment = appointment(client, user("Barbeiro"), scheduleDate.atTime(10, 0), "Corte", 1L,
+                StatusEnum.ACTIVE.getId());
 
         when(iAppointmentsRepo.getBarberAppointmentsByDate(2L, scheduleDate.atTime(9, 0), scheduleDate.atTime(20, 0)))
                 .thenReturn(List.of(appointment));
@@ -72,8 +74,8 @@ class AppointmentsServiceTest {
         LocalDate scheduleDate = LocalDate.of(2026, 8, 1);
         Users barber = user("Barbeiro");
         List<Appointments> appointments = List.of(
-                appointment(user("Cliente 1"), barber, scheduleDate.atTime(9, 30), "Corte", 1L),
-                appointment(user("Cliente 2"), barber, scheduleDate.atTime(10, 30), "Barba", 2L)
+                appointment(user("Cliente 1"), barber, scheduleDate.atTime(9, 30), "Corte", 1L, StatusEnum.ACTIVE.getId()),
+                appointment(user("Cliente 2"), barber, scheduleDate.atTime(10, 30), "Barba", 2L, StatusEnum.ACTIVE.getId())
         );
 
         when(iAppointmentsRepo.getBarberAppointmentsByDate(2L, scheduleDate.atTime(9, 0), scheduleDate.atTime(20, 0)))
@@ -93,7 +95,7 @@ class AppointmentsServiceTest {
         CreateAppointmentRequest request = new CreateAppointmentRequest(1L, 2L, appointmentDate, "Corte e barba", 3);
         Users client = user("Cliente");
         Users barber = user("Barbeiro");
-        Appointments savedAppointment = appointment(client, barber, appointmentDate, request.getDescription(), 3L);
+        Appointments savedAppointment = appointment(client, barber, appointmentDate, request.getDescription(), 3L, StatusEnum.ACTIVE.getId());
         savedAppointment.setId(10L);
 
         when(iUsersRepo.getUserById(1L)).thenReturn(client);
@@ -119,7 +121,8 @@ class AppointmentsServiceTest {
     @Test
     void shouldReturnNextClientAppointmentsWithClientName() {
         Users client = user("Cliente");
-        Appointments appointment = appointment(client, user("Barbeiro"), LocalDateTime.of(2026, 8, 2, 10, 0), "Corte", 1L);
+        Appointments appointment = appointment(client, user("Barbeiro"), LocalDateTime.of(2026, 8, 2, 10, 0),
+                "Corte", 1L, StatusEnum.ACTIVE.getId());
         when(iAppointmentsRepo.getNextClientAppointments(org.mockito.ArgumentMatchers.eq(1L), any(LocalDateTime.class)))
                 .thenReturn(List.of(appointment));
 
@@ -133,7 +136,8 @@ class AppointmentsServiceTest {
     @Test
     void shouldReturnOldClientAppointmentsWithBarberName() {
         Users barber = user("Barbeiro");
-        Appointments appointment = appointment(user("Cliente"), barber, LocalDateTime.of(2026, 7, 1, 10, 0), "Barba", 2L);
+        Appointments appointment = appointment(user("Cliente"), barber, LocalDateTime.of(2026, 7, 1, 10, 0),
+                "Barba", 2L, StatusEnum.ACTIVE.getId());
         when(iAppointmentsRepo.getOldClientAppointments(org.mockito.ArgumentMatchers.eq(1L), any(LocalDateTime.class)))
                 .thenReturn(List.of(appointment));
 
@@ -147,7 +151,7 @@ class AppointmentsServiceTest {
     @Test
     void shouldUpdateExistingAppointment() {
         Appointments appointment = appointment(user("Cliente"), user("Barbeiro antigo"),
-                LocalDateTime.of(2026, 9, 10, 10, 0), "Corte", 1L);
+                LocalDateTime.of(2026, 9, 10, 10, 0), "Corte", 1L, StatusEnum.ACTIVE.getId());
         appointment.setId(12L);
         Users newBarber = user("Barbeiro novo");
         LocalDateTime newDate = LocalDateTime.of(2026, 9, 10, 16, 30);
@@ -181,7 +185,7 @@ class AppointmentsServiceTest {
         return new Users(name.toLowerCase() + "@gmail.com", "password", name, 0);
     }
 
-    private Appointments appointment(Users client, Users barber, LocalDateTime date, String description, Long serviceType) {
-        return new Appointments(client, barber, date, description, serviceType);
+    private Appointments appointment(Users client, Users barber, LocalDateTime date, String description, Long serviceType, Integer status) {
+        return new Appointments(client, barber, date, description, serviceType ,status);
     }
 }

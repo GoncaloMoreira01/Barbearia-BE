@@ -51,6 +51,20 @@ public class AppointmentsController {
         }
     }
 
+    @DeleteMapping("/deleteAppointment")
+    public ResponseEntity<Boolean> deleteAppointment(@RequestParam long id) {
+        try {
+            boolean deleted = appointmentsService.deleteAppointment(id);
+            if (deleted) {
+                return ResponseEntity.status(HttpStatus.CREATED).body(true);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @GetMapping("/getBarberAppointments")
     public ResponseEntity<List<BarberAppointmentsResponseDto>> getBarberAppointments(@RequestParam long barberId, @RequestParam LocalDate scheduleDate) {
         try {
