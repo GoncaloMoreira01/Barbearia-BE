@@ -1,4 +1,4 @@
-💈 Barbershop-BE (Work in Progress)
+💈 Barbershop-BE
 ==========
 
 Backend REST API for managing barbershop appointments, built with Java Spring Boot.
@@ -24,19 +24,19 @@ Secure route protection
 
 Schedule new appointments
 
-View upcoming appointments (coming soon)
+View upcoming appointments
 
-View past appointment history (coming soon)
+View past appointment history
 
-Manage personal bookings (coming soon)
+Manage personal bookings
 
 ### 👤 Client Features
 
-* Create and manage appointments (manage coming soon)
+* Create and manage appointments
 
-* View previous services (coming soon)
+* View previous services
 
-* Leave feedback after appointments
+*   Leave a review of the barbershop by rating it from 1 to 5 stars and adding a comment. Both rating and comment will appear on the homepage.
 
 ### ✂️ Barber Features
 
@@ -46,7 +46,7 @@ Manage personal bookings (coming soon)
 
 ###  Feedback System
 
-Clients can rate their experience
+* Clients can rate their experience
 
 ### 🛠️ Technologies Used
 
@@ -66,8 +66,8 @@ Clients can rate their experience
 
 * REST API Architecture
 
-⚠️ Project Status
+* Docker
 
-* This project is currently under active development.
+✅ Project Status
 
-* New features such as appointment history and appointment management are being implemented.
+* This project is complete. However, suggestions, feedback, and improvements are always welcome and may be considered in the future.
